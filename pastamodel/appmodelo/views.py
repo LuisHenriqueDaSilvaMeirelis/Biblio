@@ -28,6 +28,30 @@ def relatorio_livros_pdf(request):
     return response
 
 
+def relatorio_genero_pdf(request):
+    # Configura a resposta HTTP como um PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="relatorio_genero.pdf"'
+
+    # Cria um objeto PDF
+    p = canvas.Canvas(response)
+
+    # Adiciona o conteúdo do relatório
+    generos = Genero.objects.all()
+    y = 800
+    for genero in generos:
+        p.drawString(100, y, f"id: {genero.id}")
+        p.drawString(100, y - 20, f"nome: {genero.nome}")
+        y -= 60
+
+    # Fecha o objeto PDF
+    p.showPage()
+    p.save()
+
+    return response
+
+
+
 
 
 def home(request):
